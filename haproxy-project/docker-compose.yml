@@ -1,0 +1,25 @@
+services:
+
+  nginx:
+    image: nginx
+    container_name: backend-nginx
+    volumes:
+      - ./nginx:/usr/share/nginx/html
+    networks:
+      - proxy-network
+
+  haproxy:
+    image: haproxy
+    container_name: haproxy-proxy
+    ports:
+      - "8082:80"
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    depends_on:
+      - nginx
+    networks:
+      - proxy-network
+
+
+networks:
+  proxy-network:
